@@ -4,7 +4,7 @@ function createElement(tagName, props, ...children) {
   const element = document.createElement(tagName);
 
   Object.entries(props || {}).forEach(([key, value]) => {
-    element[key] = value;
+    element[key.toLowerCase()] = value;
   });
 
   children.flat().forEach((child) => {
@@ -18,21 +18,19 @@ function createElement(tagName, props, ...children) {
   return element;
 }
 
+createElement();
+
 //
 
-let count = 0;
+function render({ count }) {
+  function handleClick() {
+    render({ count: count + 1});
+  }
 
-function handleClick() {
-  count += 1;
-  render();
-}
+  function handleClickNumber(value) {
+    render({ count: value });
+  }
 
-function handleClickNumber(value) {
-  count = value;
-  render();
-}
-
-function render() {
   const element = (
     <div id="Hello" className="Greeting">
       <p>Hello, world!</p>
@@ -58,4 +56,6 @@ function render() {
   document.getElementById('app').appendChild(element);
 }
 
-render();
+render({
+  count: 0,
+});
